@@ -4,7 +4,7 @@ import select
 
 
 sock = socket.socket()
-sock.bind(('127.0.0.1', 9090))
+sock.bind(('192.168.1.61', 9090))
 sock.listen(1)
 
 arr_conn=[]
@@ -12,12 +12,20 @@ arr_addr=[]
 index=0
 
 def acept_klient():
+    global index
+    global arr_conn
+    global sock
+
     while True:
-        arr_conn[index] = sock.accept()
+        arr_conn.append(sock.accept())
         print ('connected:',arr_conn[index][1])
         index+=1
 
 def send_klients():
+    global index
+    global arr_conn
+    global sock
+
     while True:
         message=''
         for i in range(len(arr_conn)):
@@ -31,6 +39,7 @@ def send_klients():
                     except Exception:
                         print(arr_conn[i][1]+'off')
                         arr_conn.pop(i)
+                        index-=1
                 else:
                     print('')
             else:
