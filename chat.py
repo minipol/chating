@@ -2,6 +2,8 @@ import keyboard
 import os
 import time
 from ctypes import *
+import socket
+import threading
 
 # ================================= для изменения кординаты курсора в cmd
 STD_OUTPUT_HANDLE = -11
