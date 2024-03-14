@@ -4,7 +4,7 @@ import select
 
 
 sock = socket.socket()
-sock.bind(('192.168.1.61', 9090))
+sock.bind(('192.168.1.165', 9090))
 sock.listen(1)
 
 arr_conn=[]
@@ -36,6 +36,8 @@ def send_klients():
                     try:
                         # aaaa=arr_conn[i][0].recv(1024).decode()
                         message=arr_conn[i][0].recv(1024).decode()
+                        # for g in arr_conn:
+                        #     g[0].send(message.encode())
                     except Exception:
                         print(arr_conn[i][1]+'off')
                         arr_conn.pop(i)

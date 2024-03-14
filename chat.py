@@ -21,12 +21,12 @@ def print_at(r, c, s):
     windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
 # ========================================================================
 
-ch='asd\nzcv'
+ch='conecting\n'
 sender=''
 alphavit = [chr(i) for i in range(97, 123)]
 
 sock = socket.socket()
-sock.connect(('192.168.1.61', 9090))
+sock.connect(('192.168.1.165', 9090))
 
 def out_chat():
     global ch
@@ -63,7 +63,7 @@ def recv_server():
         os.system('cls')
 
 
-def send_server():
+def send_server():    
     global ch
     global sock
 
