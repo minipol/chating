@@ -26,7 +26,7 @@ sender=''
 alphavit = [chr(i) for i in range(97, 123)]
 
 sock = socket.socket()
-sock.connect(('192.168.1.165', 9090))
+sock.connect(('192.168.1.14', 9090))
 
 def out_chat():
     global ch
@@ -36,9 +36,11 @@ def out_chat():
     while True:  # making a loop
         print_at(0,0,ch)
         print_at(20,0,'>'+sender)
+
         try:  # used try so that if user pressed other than the given key error will not be shown
             if keyboard.is_pressed('enter'):
-                ch+=('\n'+sender)
+                # ch+=('\n'+sender)
+                send_server(sender+"\n")
                 sender=''
                 os.system('cls')
                 time.sleep(0.1)
@@ -58,29 +60,29 @@ def recv_server():
     global sock
 
     while True:
-        ch= sock.recv(1024).decode()
+        ch+= sock.recv(1024).decode()
         time.sleep(1)
         os.system('cls')
 
 
-def send_server():    
+def send_server(msg):    
     global ch
     global sock
 
-    while True:
-        sock.send(ch.encode())
-        time.sleep(1)
-        os.system('cls')
+    # while True:
+    sock.send(msg.encode())
+    time.sleep(1)
+    os.system('cls')
 
 
 t1 = threading.Thread(target=out_chat)
 t2 = threading.Thread(target=recv_server)
-t3 = threading.Thread(target=send_server)
+# t3 = threading.Thread(target=send_server)
 
 t1.start()
 t2.start()
-t3.start()
+# t3.start()
 
 t1.join()
 t2.join()    
-t3.join()    
+# t3.join()    
