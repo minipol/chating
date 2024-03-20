@@ -2,7 +2,6 @@ import socket
 import threading
 import select
 
-
 sock = socket.socket()
 sock.bind(('192.168.1.14', 9090))
 sock.listen(1)
@@ -12,20 +11,12 @@ arr_addr=[]
 index=0
 
 def acept_klient():
-    global index
-    global arr_conn
-    global sock
-
     while True:
         arr_conn.append(sock.accept())
         print ('connected:',arr_conn[index][1])
         index+=1
 
 def send_klients():
-    global index
-    global arr_conn
-    global sock
-
     while True:
         message=''
         for i in range(len(arr_conn)):
@@ -34,19 +25,16 @@ def send_klients():
             if ready_socket:
                 if arr_conn[i][0].fileno():
                     try:
-                        # aaaa=arr_conn[i][0].recv(1024).decode()
                         message+=arr_conn[i][0].recv(1024).decode()
-                        # for g in arr_conn:
-                        #     g[0].send(message.encode())
                     except Exception:
-                        print(arr_conn[i][0], '')
-                        print(" off")
+                        print(arr_conn[i][0])
+                        print("offline")
                         arr_conn.pop(i)
                         index-=1
                 else:
-                    print('')
+                    print('bim')
             else:
-                print('')
+                print('bam')
         for i in arr_conn:
             i[0].send(message.encode())
 
