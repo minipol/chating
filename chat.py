@@ -55,7 +55,7 @@ def recv_server():
         time.sleep(1)
         os.system('cls')
 
-def send_server(msg):    
+def send_server(msg):
     # while True:
     sock.send(msg.encode())
     time.sleep(1)

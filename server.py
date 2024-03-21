@@ -1,19 +1,28 @@
-import socket
-import threading
-import select
+import socket #Для работы с сетью
+import threading #Для работы с потоками
+import select #Для: ?
 
+#Создается сокет и записывается в переменную
 sock = socket.socket()
+#"Создание сервера" и настройка
 sock.bind(('192.168.1.14', 9090))
-sock.listen(1)
+#Запускаем сервер на прослушивание
+sock.listen()
 
+#Храним подключение пользователей (клиентов)
 arr_conn=[]
-arr_addr=[]
+#Счетчик подключенных пользователей
 index=0
 
+#Для того чтобы принимать подключение других пользователей
 def acept_klient():
+    #Для подключение многих пользователей 
     while True:
+        #Добавление подключенного пользователя, подключение пользователя
         arr_conn.append(sock.accept())
+        #Выводим в консоль подключение пользователей
         print ('connected:',arr_conn[index][1])
+        #Обновление счетчика
         index+=1
 
 def send_klients():
@@ -29,7 +38,7 @@ def send_klients():
                     except Exception:
                         print(arr_conn[i][0])
                         print("offline")
-                        arr_conn.pop(i)
+                        arr_conn.pop(0)
                         index-=1
                 else:
                     print('bim')
