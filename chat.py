@@ -8,13 +8,17 @@ import threading
 
 # ================================= для изменения кординаты курсора в cmd
 STD_OUTPUT_HANDLE = -11
+
 class COORD(Structure):
     pass
+
 COORD._fields_ = [("X", c_short), ("Y", c_short)]
 
-def print_at(r,c):
+def print_at(r, c, s):
     h = windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
     windll.kernel32.SetConsoleCursorPosition(h, COORD(c, r))
+
+    c = s.encode("cp866")
     windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
 # ========================================================================
 
@@ -24,9 +28,14 @@ sender=''
 alphavit = [chr(i) for i in range(97, 123)]
 
 sock = socket.socket()
-sock.connect(('192.168.1.188', 9090))
+sock.connect(('192.168.1.61', 9090))
 
 def out_chat():
+    global ch
+    global sender
+    global alphavit
+    global sock
+
     while True:  # создание цикла
         print_at(0,0,ch)
         print_at(20,0,'>'+sender)
@@ -50,12 +59,17 @@ def out_chat():
             break  # если пользователь нажал клавишу, отличную от данной, цикл прервется
 
 def recv_server():
+    global ch
+    global sock
+
     while True:
         ch+= sock.recv(1024).decode()
         time.sleep(1)
         os.system('cls')
 
 def send_server(msg):
+    global sock
+
     # while True:
     sock.send(msg.encode())
     time.sleep(1)

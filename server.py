@@ -5,8 +5,8 @@ import select #Для: ?
 #Создается сокет и записывается в переменную
 sock = socket.socket()
 #"Создание сервера" и настройка
-sock.bind(('192.168.1.14', 9090))
-#Запускаем сервер на прослушивание
+sock.bind(('192.168.1.61', 9090))
+#Запускаем сервер на прослушивание порта
 sock.listen()
 
 #Храним подключение пользователей (клиентов)
@@ -16,16 +16,23 @@ index=0
 
 #Для того чтобы принимать подключение других пользователей
 def acept_klient():
+    global sock
+    global arr_conn
+    global index
+
     #Для подключение многих пользователей 
     while True:
         #Добавление подключенного пользователя, подключение пользователя
         arr_conn.append(sock.accept())
-        #Выводим в консоль подключение пользователей
+        #Выводим в консоль подключеного пользователей
         print ('connected:',arr_conn[index][1])
         #Обновление счетчика
         index+=1
 
 def send_klients():
+    global sock
+    global arr_conn
+    global index
     while True:
         message=''
         for i in range(len(arr_conn)):
