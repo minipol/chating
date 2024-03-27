@@ -23,9 +23,9 @@ def recv_clients():
     
     while True:
         for i in range(len(arr_conn)):
-            # timeout=10
-            # ready_socket,_,_=select.select([arr_conn[i][0]],[],[],None)
-            # if ready_socket:
+            timeout=10
+            ready_socket,_,_=select.select([arr_conn[i][0]],[],[],None)
+            if ready_socket:
                 if arr_conn[i][0].fileno():
                     try:
                         message+=arr_conn[i][0].recv(1024).decode()
@@ -36,8 +36,8 @@ def recv_clients():
                         index-=1
                 else:
                     print('bim')
-            # else:
-            #     print('bam')
+            else:
+                print('bam')
 
 #Для того чтобы принимать подключение других пользователей
 def acept_klient():
