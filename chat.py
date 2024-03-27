@@ -81,7 +81,7 @@ def recv_server():
 # Бесконечный цикл
     while True:
         # Получаем данные с сервера и добавляем в ch
-        ch+= sock.recv(1024).decode()
+        ch= sock.recv(1024).decode()
         time.sleep(1)
         os.system('cls')
 
