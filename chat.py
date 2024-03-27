@@ -22,35 +22,50 @@ def print_at(r, c, s):
     windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
 # ========================================================================
 
-# проверка устоновки соеденения с сервером
+# Хранит весь чат
 ch='conecting\n'
+# Хранит то что ввел пользователь
 sender=''
+# Хранит английский алфавит
 alphavit = [chr(i) for i in range(97, 123)]
 
+# Создание сокета и подключения к серверу
 sock = socket.socket()
-sock.connect(('192.168.1.61', 9090))
+sock.connect(('192.168.1.14', 9090))
 
+# Создание функции для вывода чата
 def out_chat():
     global ch
     global sender
     global alphavit
     global sock
 
-    while True:  # создание цикла
+    # Создание цикла
+    while True:
+        # Вывод чата в координатах 0,0
         print_at(0,0,ch)
+        # Вывод то что ввел пользователь в координатах 20,0
         print_at(20,0,'>'+sender)
 
-        try:  # используется попытка, чтобы при нажатии пользователем другой клавиши, кроме данной, ошибка не отображалась
+        # Используется попытка, чтобы при нажатии пользователем другой клавиши, кроме данной, ошибка не отображалась
+        try:
+            # Если пользователь нажал enter то 
             if keyboard.is_pressed('enter'):
-                # ch+=('\n'+sender)
+                # Отправляем на сервер сообщение
                 send_server(sender+"\n")
+                # Очищаем то что ввел пользователь
                 sender=''
+                # Очищаем консоль
                 os.system('cls')
+                # Задержка
                 time.sleep(0.1)
+            # Если пользователь нажал backspace то
             if keyboard.is_pressed('backspace'):
+                # Удаляем последний символ
                 sender=sender[:-1]
                 os.system('cls')
                 time.sleep(0.1)
+            # Если пользователь нажал на букву из алфавита то она вставится в sender
             for bukva in alphavit:
                 if keyboard.is_pressed(bukva):  # если нажата клавиша «q»
                     sender+=bukva
@@ -58,15 +73,19 @@ def out_chat():
         except:
             break  # если пользователь нажал клавишу, отличную от данной, цикл прервется
 
+# Получения сообщения от сервера
 def recv_server():
     global ch
     global sock
 
+# Бесконечный цикл
     while True:
+        # Получаем данные с сервера и добавляем в ch
         ch+= sock.recv(1024).decode()
         time.sleep(1)
         os.system('cls')
 
+# Отправка сервера сообщения
 def send_server(msg):
     global sock
 
@@ -75,6 +94,7 @@ def send_server(msg):
     time.sleep(1)
     os.system('cls')
 
+# Потоки
 t1 = threading.Thread(target=out_chat)
 t2 = threading.Thread(target=recv_server)
 # t3 = threading.Thread(target=send_server)
