@@ -22,6 +22,12 @@ def print_at(r, c, s):
     windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
 # ========================================================================
 
+print('введите ip: ')
+ip_input = input()
+print('введите ник: ')
+nicname = input()
+os.system('cls')
+
 # Хранит весь чат
 ch='conecting\n'
 # Хранит то что ввел пользователь
@@ -31,7 +37,8 @@ alphavit = [chr(i) for i in range(97, 123)]
 
 # Создание сокета и подключения к серверу
 sock = socket.socket()
-sock.connect(('192.168.1.61', 9090))
+sock.connect((ip_input, 9090))
+sock.send("-".encode())
 
 # Создание функции для вывода чата
 def out_chat():
@@ -39,13 +46,14 @@ def out_chat():
     global sender
     global alphavit
     global sock
+    global nicname
 
     # Создание цикла
     while True:
         # Вывод чата в координатах 0,0
         print_at(0,0,ch)
         # Вывод то что ввел пользователь в координатах 20,0
-        print_at(20,0,os.getlogin()+'> '+sender)
+        print_at(20,0,nicname+'> '+sender)
         # print(os.getlogin())
 
         # Используется попытка, чтобы при нажатии пользователем другой клавиши, кроме данной, ошибка не отображалась
@@ -53,7 +61,7 @@ def out_chat():
             # Если пользователь нажал enter то 
             if keyboard.is_pressed('enter'):
                 # Отправляем на сервер сообщение
-                send_server(os.getlogin() + ": " + sender+"\n")
+                send_server(nicname + ": " + sender+"\n")
                 # Очищаем то что ввел пользователь
                 sender=''
                 # Очищаем консоль
